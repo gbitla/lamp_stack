@@ -17,7 +17,7 @@ data "template_file" "user_data" {
   }
 }
 
-resource "aws_launch_configuration" "example" {
+resource "aws_launch_configuration" "web_example" {
   #count         = 3
   image_id      = "ami-2d39803a"
   instance_type = "t2.micro"
@@ -33,7 +33,7 @@ resource "aws_launch_configuration" "example" {
 }
 
 resource "aws_security_group" "instance-sg" {
-  name = "terraform-example-instance-sg"
+  name = "terraform-web-example-instance-sg"
 
   ingress {
     from_port   = "${var.server_port}"
@@ -47,12 +47,12 @@ resource "aws_security_group" "instance-sg" {
   }
 }
 
-resource "aws_autoscaling_group" "example" {
-  launch_configuration = "${aws_launch_configuration.example.id}"
+resource "aws_autoscaling_group" "web_example" {
+  launch_configuration = "${aws_launch_configuration.web_example.id}"
 
   #availability_zones = ["${data.aws_availability_zones.all.names}"]
   availability_zones = ["${data.aws_availability_zones.all.names}"]
-  load_balancers     = ["${aws_elb.example.name}"]
+  load_balancers     = ["${aws_elb.web_example.name}"]
   health_check_type  = "ELB"
 
   min_size = 2
@@ -60,13 +60,13 @@ resource "aws_autoscaling_group" "example" {
 
   tag {
     key                 = "Name"
-    value               = "terraform-asg-example"
+    value               = "terraform-asg-web-example"
     propagate_at_launch = true
   }
 }
 
-resource "aws_elb" "example" {
-  name               = "terraform-asg-example"
+resource "aws_elb" "web_example" {
+  name               = "terraform-asg-web-example"
   availability_zones = ["${data.aws_availability_zones.all.names}"]
   security_groups    = ["${aws_security_group.elb-sg.id}"]
 
@@ -87,7 +87,7 @@ resource "aws_elb" "example" {
 }
 
 resource "aws_security_group" "elb-sg" {
-  name = "terraform-example-elb"
+  name = "terraform-web-example-elb"
 
   ingress {
     from_port   = 80

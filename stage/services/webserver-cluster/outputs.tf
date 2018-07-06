@@ -1,5 +1,5 @@
 output "launch_configuration_id" {
-  value = "${aws_launch_configuration.example.id}"
+  value = "${aws_launch_configuration.web_example.id}"
 }
 
 output "security_groups" {
@@ -7,7 +7,7 @@ output "security_groups" {
 }
 
 output "elb_dns_name" {
-  value = "${aws_elb.example.dns_name}"
+  value = "${aws_elb.web_example.dns_name}"
 }
 
 #output "public_ip" {
@@ -18,3 +18,4 @@ output "elb_dns_name" {
 #output "public_dns_name" {
 #  value = "${aws_instance.example.public_dns}"
 #}
+
